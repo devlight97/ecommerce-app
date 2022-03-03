@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  nginx:
+      build:
+        context: ./nginx
+        dockerfile: Dockerfile
+      container_name: service-discovery
+      volumes:
+        - ./nginx/conf:/etc/nginx/conf.d
+      ports:
+        - 80:80
+        - 443:443
+      depends_on:
+        - auth-service
+
+  auth-service:
+    build:
+      network: host
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    working_dir: /var/www/ecommerce-app/auth-service
+    volumes:
+      - ./auth-service/:/var/www/ecommerce-app/auth-service
+    environment:
+      NODE_ENV: development
+    hostname: auth-service
+    dns:
+      - 8.8.8.8
+      - 4.4.4.4
+      - 10.0.0.2
+    command: bash -c "npm start"
+
+  # portgres:
+  #   build:
+  #     context: ./portgres
+  #     dockerfile: Dockerfile
+  #   container_name: smart-brain-portgres
+  #     - postgresql-replication_default
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_USER: portgres
+  #     POSTGRES_PASSWORD: portgres
+  #     POSTGRES_DB: smart-brain
