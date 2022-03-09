@@ -7,10 +7,4 @@ export class AuthController {
   async hello(): Promise<any> {
     return { text: 'Hello GRPC' };
   }
-
-  @Get()
-  @Render('index')
-  async renderAuthPage() {
-    return
-  }
 }

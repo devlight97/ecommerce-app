@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package auth;
+
+message Empty {}
+
+message Token {
+  string accessToken = 1;
+}
+
+message User {
+  string userId = 1;
+  string username = 2;
+}
+
+message Hello {
+  string text = 1;
+}
+
+service AuthService {
+  rpc Authenticate (Token) returns (User) {}
+  rpc Hello (Empty) returns (Hello) {}
+}

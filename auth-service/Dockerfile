@@ -1,13 +1,17 @@
-FROM node:latest
+FROM node:lts
 
-WORKDIR /var/www/ecommerce-app/auth-service
+# WORKDIR /usr/src/ecommerce-app/auth-service
+WORKDIR /usr/src/auth-service
 
-COPY package.json ./
+ADD package*.json ./
 
-# RUN npm cache clean --force
+# RUN npm install -g npm
 RUN npm install
-RUN npm audit fix -f
 
-COPY . .
+ADD . .
+
+# RUN chown -R admin:admin /auth-service
+# RUN chmod 755 /auth-service/
+# USER root
 
 EXPOSE 3000
